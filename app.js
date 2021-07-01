@@ -23,28 +23,18 @@ Office.onReady(function () {
 // 2. How to define a UI-less function named `insertContosoMeeting` (referenced in the manifest)
 //    to update the meeting body with the online meeting details.
 async function insertContosoMeeting(event) {
-  var id = 'hello';
-  var details =
-    {
-      type: "errorMessage",
-      message: "Error notification message with id = " + id
-    };
-  Office.context.mailbox.item.notificationMessages.addAsync(id, details, (result)=> {
-    console.log(result);
-    event.completed({ allowEvent: false });
-  });
-    // // Get HTML body from the client.
-    // mailboxItem.body.getAsync("html",
-    //     { asyncContext: event },
-    //     function (getBodyResult) {
-    //         if (getBodyResult.status === Office.AsyncResultStatus.Succeeded) {
-    //             updateBody(getBodyResult.asyncContext, getBodyResult.value);
-    //         } else {
-    //             console.error("Failed to get HTML body.");
-    //             getBodyResult.asyncContext.completed({ allowEvent: false });
-    //         }
-    //     }
-    // );
+    // Get HTML body from the client.
+    mailboxItem.body.getAsync("html",
+        { asyncContext: event },
+        function (getBodyResult) {
+            if (getBodyResult.status === Office.AsyncResultStatus.Succeeded) {
+                updateBody(getBodyResult.asyncContext, getBodyResult.value);
+            } else {
+                console.error("Failed to get HTML body.");
+                getBodyResult.asyncContext.completed({ allowEvent: false });
+            }
+        }
+    );
 }
 
 // 3. How to implement a supporting function `updateBody`
